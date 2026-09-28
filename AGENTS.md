@@ -4,14 +4,14 @@
 
 OpenChat is a local-first AI chat application with:
 
-* **Frontend:** Next.js 16, React 19, TypeScript 7, Tailwind CSS 4, shadcn/ui
-* **Backend:** FastAPI, Python 3.13
+* **web:** Next.js 16, React 19, TypeScript 7, Tailwind CSS 4, shadcn/ui
+* **api:** FastAPI, Python 3.13
 * **Python tooling:** uv, Ruff, pytest
 * **Local AI:** Ollama running at `localhost:11434`
 * **Local model:** `gemma3:4b`
 * **Cloud AI fallback:** OpenAI, Anthropic, or Gemini APIs
-* **Frontend directory:** `frontend/`
-* **Backend directory:** `backend/`
+* **web directory:** `web/`
+* **api directory:** `api/`
 
 The application should prefer local AI through Ollama and use cloud AI providers only when configured/required.
 
@@ -25,14 +25,14 @@ Expected structure:
 
 ```text
 OpenChat/
-├── frontend/
+├── web/
 │   ├── app/
 │   ├── components/
 │   ├── lib/
 │   ├── public/
 │   └── ...
 │
-├── backend/
+├── api/
 │   ├── app/
 │   ├── tests/
 │   └── ...
@@ -53,12 +53,12 @@ Before creating a new file:
 
 # 3. Development Commands
 
-## Frontend
+## web
 
 Start the development server:
 
 ```bash
-cd frontend
+cd web
 npm run dev
 ```
 
@@ -68,42 +68,42 @@ Default port:
 http://localhost:3000
 ```
 
-Install a frontend dependency:
+Install a web dependency:
 
 ```bash
-cd frontend
+cd web
 npm install <package_name>
 ```
 
-Build frontend:
+Build web:
 
 ```bash
-cd frontend
+cd web
 npm run build
 ```
 
 Run production server:
 
 ```bash
-cd frontend
+cd web
 npm run start
 ```
 
 If linting is configured:
 
 ```bash
-cd frontend
+cd web
 npm run lint
 ```
 
 ---
 
-## Backend
+## api
 
 Start the development server:
 
 ```bash
-cd backend
+cd api
 uv run fastapi dev
 ```
 
@@ -113,38 +113,38 @@ Default port:
 http://localhost:8000
 ```
 
-Install a backend dependency:
+Install a api dependency:
 
 ```bash
-cd backend
+cd api
 uv add <package_name>
 ```
 
 Install dependencies after cloning the repository:
 
 ```bash
-cd backend
+cd api
 uv sync
 ```
 
 Run tests:
 
 ```bash
-cd backend
+cd api
 pytest
 ```
 
 Run Ruff:
 
 ```bash
-cd backend
+cd api
 ruff check .
 ```
 
 Format Python code:
 
 ```bash
-cd backend
+cd api
 ruff format .
 ```
 
@@ -224,7 +224,7 @@ If a new environment variable is required:
 
 ---
 
-# 6. Frontend Rules
+# 6. web Rules
 
 Use:
 
@@ -275,9 +275,9 @@ Do not suppress TypeScript errors without understanding and fixing the underlyin
 
 ---
 
-# 7. Backend Rules
+# 7. api Rules
 
-Use FastAPI for backend APIs.
+Use FastAPI for api APIs.
 
 Keep responsibilities separated:
 
@@ -295,7 +295,7 @@ Do not put large amounts of business logic directly inside route handlers.
 
 Use Pydantic models for request/response validation.
 
-Backend code should be:
+api code should be:
 
 * typed
 * testable
@@ -318,7 +318,7 @@ When adding or modifying an API:
 6. Do not expose API keys or sensitive configuration in responses.
 7. Add or update tests.
 
-Frontend API calls should use the existing API utility/service pattern instead of duplicating request logic throughout components.
+web API calls should use the existing API utility/service pattern instead of duplicating request logic throughout components.
 
 ---
 
@@ -341,7 +341,7 @@ Ollama OpenAI   Anthropic/Gemini
 
 The UI should not contain provider-specific implementation details.
 
-Provider-specific logic belongs in the backend/service layer.
+Provider-specific logic belongs in the api/service layer.
 
 Handle:
 
@@ -369,7 +369,7 @@ Chat-related changes should preserve:
 * model/provider selection
 * local/cloud provider fallback behavior
 
-Do not change the message/API contract without checking all affected frontend and backend code.
+Do not change the message/API contract without checking all affected web and api code.
 
 ---
 
@@ -380,18 +380,18 @@ Do not change the message/API contract without checking all affected frontend an
 At minimum:
 
 ```bash
-cd backend
+cd api
 pytest
 ```
 
-For backend changes, also run:
+For api changes, also run:
 
 ```bash
 ruff check .
 ruff format --check .
 ```
 
-For frontend changes, run the project's configured checks such as:
+For web changes, run the project's configured checks such as:
 
 ```bash
 npm run lint
@@ -425,7 +425,7 @@ Before modifying code:
 * inspect the relevant files
 * understand the existing implementation
 * search for existing utilities/components/functions
-* identify dependencies between frontend and backend
+* identify dependencies between web and api
 
 ### Step 2 — Plan
 
@@ -433,7 +433,7 @@ Determine:
 
 * which files need changing
 * whether a new file is actually necessary
-* whether frontend and backend both need changes
+* whether web and api both need changes
 * what tests need to be added/updated
 
 ### Step 3 — Implement
@@ -512,13 +512,13 @@ Before adding a dependency:
 4. Update lockfiles appropriately.
 5. Verify the application still builds/tests.
 
-Backend dependencies:
+api dependencies:
 
 ```bash
 uv add <package_name>
 ```
 
-Frontend dependencies:
+web dependencies:
 
 ```bash
 npm install <package_name>
@@ -558,13 +558,13 @@ Interactive elements should have appropriate:
 
 Errors should be handled at the appropriate layer.
 
-Frontend:
+web:
 
 * show useful user-facing messages
 * avoid exposing internal stack traces
 * handle loading/error/empty states
 
-Backend:
+api:
 
 * return appropriate HTTP status codes
 * validate inputs
@@ -641,9 +641,9 @@ A task is considered complete only when:
 
 * [ ] Requested functionality is implemented.
 * [ ] Existing functionality is preserved.
-* [ ] Frontend builds successfully when frontend code changed.
-* [ ] Backend tests pass.
-* [ ] Ruff checks pass for backend changes.
+* [ ] web builds successfully when web code changed.
+* [ ] api tests pass.
+* [ ] Ruff checks pass for api changes.
 * [ ] TypeScript/lint checks pass where configured.
 * [ ] No secrets were added.
 * [ ] No unnecessary dependencies were added.
@@ -659,9 +659,9 @@ A task is considered complete only when:
 2. **Run tests after every change.**
 3. **Inspect existing code before creating new code.**
 4. **Reuse existing components and utilities.**
-5. **Keep frontend and backend responsibilities separated.**
+5. **Keep web and api responsibilities separated.**
 6. **Keep AI provider logic out of UI components.**
-7. **Never expose API keys to the frontend.**
+7. **Never expose API keys to the web.**
 8. **Do not suppress errors instead of fixing them.**
 9. **Do not make unrelated changes.**
 10. **Prefer small, testable, maintainable changes.**
