@@ -255,7 +255,7 @@ export function ChatApp() {
           <img
             src="/logo.png"
             alt=""
-            className="w-[min(55vw,600px)] max-w-[600px] select-none opacity-[0.2]"
+            className="w-[min(55vw,600px)] max-w-[600px] select-none opacity-[0.3]"
           />
         </div>
 
